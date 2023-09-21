@@ -1,0 +1,62 @@
+﻿@using Rental.Models
+@model Rental.ViewModels.PesquisaVeiculoCategoriaEmpresaViewModel
+@{
+
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+	<div class="hero">
+		<div class="container">
+			<div class="intro-wrap col-8">
+				<h1 class="mb-5 mt-2 text-black fw-bold"><span class="d-block">Aproveite a sua</span> viagem em <span class="typed-words"></span></h1>
+				<form asp-controller="Veiculos" asp-action="PesquisaInicial" method="post" class="form" style="background-color:rgba(0,0,0,0.7)">
+					<div asp-validation-summary="ModelOnly"></div>
+					<div class="row mb-2 ">
+						<div class="col-sm-12 col-md-3 col-lg-4">
+							<label class="control-label text-white" asp-for="Localizacao">Localização</label>
+							<input type="text" class="form-control bg-opacity-25 bg-black text-white" asp-for="Localizacao">
+							<span asp-validation-for="Localizacao" class="text-danger"></span>
+
+						</div>
+						<div class="col-sm-12 col-md-5 col-lg-4">
+							<label class="control-label text-white" asp-for="DataLevantamento"></label>
+							<input value="@DateTime.Now" asp-for="DataLevantamento" min="@DateTime.Now" class="form-control bg-opacity-25 bg-black text-white">
+							<span asp-validation-for="DataLevantamento" class="text-danger"></span>
+						</div>
+						<div class="col-sm-12 col-md-4 col-lg-4">
+							<label class="control-label text-white" asp-for="DataEntrega"></label>
+							<input value="@DateTime.Now" asp-for="DataEntrega" min="@DateTime.Now" class="form-control bg-opacity-25 bg-black text-white">
+							<span asp-validation-for="DataEntrega" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row align-items-center ">
+						<div class="col-sm-4 col-md-4 mb-3 mb-lg-0 col-lg-4">
+							<label asp-for="CategoriaId" class="control-label text-white"></label>
+							<select asp-for="CategoriaId" class="form-control bg-opacity-25 bg-black text-white" style="background:black ;color: #fff;fill-opacity:0.25" asp-items="ViewBag.CategoriaId" title="Categoria">
+								<option style="color:#000" value="">Escolha uma categoria</option>
+							</select>
+						</div>
+						<div class="col-sm-4 col-md-4 mb-3 mb-lg-0 col-lg-4">
+							<label asp-for="EmpresaId" class="control-label text-white"></label>
+							<select asp-for="EmpresaId" class="form-control bg-opacity-25 bg-black text-white" style="background:black ;color: #fff;fill-opacity:0.25" asp-items="ViewBag.EmpresaId">
+								<option style="color:#000" value="">Escolha uma empresa</option>
+							</select>
+						</div>
+						<div class="col-sm-4 col-md-2 mb-3 mt-3 mb-lg-0 col-lg-4">
+							<input type="submit" class="btn btn-warning" value="Pesquisar">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+
+

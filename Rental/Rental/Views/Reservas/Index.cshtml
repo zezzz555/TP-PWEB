@@ -1,0 +1,155 @@
+﻿@using Rental.Models
+@model Rental.ViewModels.ReservasCategoriaClienteDatasViewModel
+
+@{
+    ViewData["Title"] = "Lista de Reservas";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@if (Model == null)
+{
+    <p class="alert alert-primary  mb-3 mt-3 "> Não se encontra associado a nenhuma empresa </p>
+}
+else
+{
+
+    <div class="container-fluid mt-2 mb-2">
+        <form asp-action="Index" method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="row mb-2">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <div class="form-group">
+                        <label asp-for="DataLevantamento" class="control-label"></label>
+                        <input asp-for="DataLevantamento" min="@DateTime.Now" class="form-control" />
+                        <span asp-validation-for="DataLevantamento" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label asp-for="DataEntrega" class="control-label"></label>
+                    <input asp-for="DataEntrega" min="@DateTime.Now" class="form-control" />
+                    <span asp-validation-for="DataEntrega" class="text-danger"></span>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label asp-for="CategoriaId" class="control-label"></label>
+                    <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId" title="Categoria">
+                        <option value="">Escolha uma categoria</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-2">
+                    <label asp-for="ClienteId" class="control-label"></label>
+                    <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
+                        <option value="">Escolha um cliente</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-1 align-self-end ">
+                    <input type="submit" class="btn btn-warning btn-block" value="Filtrar">
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Foto do Veículo
+                </th>
+                <th>
+                    Veículo
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CategoriaId)
+                </th>
+                <th>
+                    Localização
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ClienteId)
+                </th>
+                <th>
+                    DataPedido
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataLevantamento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataEntrega)
+                </th>
+                <th>
+                    Custo
+                </th>
+                <th>
+                    Confirmada
+                </th>
+                <th>
+                    Rejeitada
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ListaDeReservas)
+            {
+                <tr>
+                    <td>
+                        @if (!String.IsNullOrEmpty(item.veiculo.FotoURL))
+                        {
+                            <img class="bd-placeholder-img card-img-top img-fluid" style="object-fit:cover;height:auto" src="@Url.Content(item.veiculo.FotoURL)" alt="Imagem" height="280" />
+                        }
+                        else
+                        {
+                            <img class="bd-placeholder-img card-img-top img-fluid" style="object-fit:cover;height:auto" src="@Url.Content("~/images/null.jpg")" alt="Imagem" />
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.veiculo.Modelo)
+                        @Html.DisplayFor(modelItem => item.veiculo.Marca)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.veiculo.categoria.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.veiculo.Localizacao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cliente.PrimeiroNome)
+                        @Html.DisplayFor(modelItem => item.cliente.UltimoNome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataPedido)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataLevantamento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataEntrega)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Custo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Confirmado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rejeitada)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    </td>
+                     <td class="border-2 border-success">
+                        <a asp-controller="EstadoVeiculos" asp-action="EntregaAoCliente" asp-route-id="@item.Id">Entregar Veículo</a>
+                    </td>
+                    <td class="border-2 border-warning">
+                        <a asp-controller="EstadoVeiculos" asp-action="ReceberDoCliente" asp-route-id="@item.Id">Receber Veículo</a>
+                    </td>
+                </tr>
+      
+            }
+        </tbody>
+    </table>
+}

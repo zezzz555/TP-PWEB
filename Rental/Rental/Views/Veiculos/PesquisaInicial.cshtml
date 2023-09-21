@@ -1,0 +1,151 @@
+﻿@using Rental.Models
+@model Rental.ViewModels.PesquisaVeiculoCategoriaEmpresaViewModel
+@{
+    //ViewData["Title"] = "PesquisaInicial";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@if(Model != null)
+{
+<div class="container-fluid mt-2 mb-2">
+    <form asp-action="PesquisaInicial" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="row mb-2">
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                    <label asp-for="Localizacao" class="control-label"></label>
+                    <input asp-for="Localizacao" class="form-control" />
+                    <span asp-validation-for="Localizacao" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label asp-for="TipoVeiculo" class="control-label"></label>
+                <input asp-for="TipoVeiculo" class="form-control" />
+                <span asp-validation-for="TipoVeiculo" class="text-danger"></span>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label asp-for="CategoriaId" class="control-label"></label>
+                <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId" title="Categoria">
+                    <option value="">Escolha uma categoria</option>
+                </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label asp-for="EmpresaId" class="control-label"></label>
+                <select asp-for="EmpresaId" class="form-control" asp-items="ViewBag.EmpresaId">
+                    <option value="">Escolha uma empresa</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label class="control-label" asp-for="DataLevantamento"></label>
+                <input asp-for="DataLevantamento" min="@DateTime.Now" class="form-control">
+                <span asp-validation-for="DataLevantamento" class="text-danger"></span>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <label class="control-label" asp-for="DataEntrega"></label>
+                <input class="form-control" asp-for="DataEntrega" min="@DateTime.Now">
+                <span asp-validation-for="DataEntrega" class="text-danger"></span>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3 align-self-end ">
+                <input type="submit" class="btn btn-warning btn-block" value="Filtrar">
+            </div>
+        </div>
+    </form>
+</div>
+@*@if (!string.IsNullOrEmpty(Model.localizacao) && !string.IsNullOrEmpty(Model.tipoVeiculo))
+{*@
+@if (Model.NumResultados == 0 && !string.IsNullOrEmpty(Model.Localizacao) && !string.IsNullOrEmpty(Model.TipoVeiculo))
+{
+    <p class="alert alert-warning  mb-3 mt-3 ">
+        Não existem veículos do tipo @Model.TipoVeiculo disponiveis em @Model.Localizacao.
+    </p>
+}
+else if (Model.NumResultados == 0)
+{
+    <p class="alert alert-warning  mb-3 mt-3 "> Não existem veículos disponíveis correspondentes aos dados introduzidos </p>
+}
+else if (Model.ListaDeVeiculos != null)
+{
+    <div class="row row-cols-1 row-cols-md-3 mb-3 mt-3 text-center">
+        @foreach (var item in Model.ListaDeVeiculos)
+        {
+            <div class="col">
+                <div class="card text-dark border-warning border-2 mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">
+                            @item.Marca @item.Modelo
+                        </h4>
+                    </div>
+                    @if (!String.IsNullOrEmpty(item.FotoURL))
+                    {
+                        <img class="bd-placeholder-img card-img-top img-fluid" style="object-fit:cover;width:100%;height:250px" src="@Url.Content(item.FotoURL)" alt="Imagem" height="280" />
+                    }
+                    else
+                    {
+                        <img class="bd-placeholder-img card-img-top img-fluid" style="object-fit:cover;width:100%;height:250px" src="@Url.Content("~/images/null.jpg")" alt="Imagem" />
+                    }
+                    <div class="card-body">
+                        <h2 class="card-title pricing-card-title">@item.Preco € <small class="text-muted fw-light">Por dia</small> </h2>
+                        @if (item.Tipo != null && Model.TipoVeiculo != null)
+                        {
+                            <p> @Html.Raw(item.Tipo.ToLower().Replace(Model.TipoVeiculo.ToLower(),"<span class=\"bg-warning\">"+Model.TipoVeiculo.ToLower()+"</span>"))</p>
+                        }
+                        else if (item.Tipo != null)
+                        {
+                            <p>@item.Tipo</p>
+                        }
+                        @if (item.Localizacao != null && Model.Localizacao != null)
+                        {
+                            <p> Veículo localizado em @Html.Raw(item.Localizacao.ToLower().Replace(Model.Localizacao.ToLower(),"<span class=\"bg-warning\">"+Model.Localizacao.ToLower()+"</span>"))</p>
+                        }
+                        @if (item.empresa != null && !string.IsNullOrEmpty(item.empresa.Nome))
+                        {
+                            <p>Empresa @item.empresa.Nome</p>
+                        }
+                        <div>
+                            <div class="text-center">
+                                <a class="btn border-warning" asp-controller="Veiculos" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                                <form asp-controller="Reservas" asp-action="Pedido" method="post" class="d-inline-block">
+                                    <input type="hidden" name="veiculoId" value="@item.Id" />
+                                    <input type="hidden" name="DataLevantamento" value="@Model.DataLevantamento" />
+                                    <input type="hidden" name="DataEntrega" value="@Model.DataEntrega" />
+                                    <button type="submit" class="btn bg-success bg-opacity-25">Reservar</button>
+                                </form>
+
+                            </div>
+                            <div class="text-end">
+                                @if (item.empresa != null)
+                                {
+                                    <small class="text-muted">
+                                        @item.empresa.Avaliacao
+                                        <a class="text-black" asp-area="" asp-controller="Empresas" asp-action="Index">
+                                            @if (@item.empresa.Avaliacao < 5)
+                                            {
+                                                <svg bootstrap-icon="StarFill" style="color:red" width="16" height="16"></svg>
+                                            }
+                                            else if (@item.empresa.Avaliacao >= 5 && @item.empresa.Avaliacao < 7)
+                                            {
+                                                <svg bootstrap-icon="StarFill" style="color:orange" width="16" height="16"></svg>
+                                            }
+                                            else if (@item.empresa.Avaliacao >= 7)
+                                            {
+                                                <svg bootstrap-icon="StarFill" style="color:green" width="16" height="16"></svg>
+                                            }
+                                        </a>
+                                    </small>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

@@ -1,0 +1,71 @@
+﻿@model Rental.Models.EstadoVeiculo
+
+@{
+    ViewData["Title"] = "Receber Veiculo Do Cliente";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<h1>Receber Veiculo Do Cliente</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FuncionarioId" />
+            <input type="hidden" asp-for="ReservaId" />
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Danos" /> @Html.DisplayNameFor(model => model.Danos)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Observações" class="control-label"></label>
+                <input asp-for="Observações" class="form-control" />
+                <span asp-validation-for="Observações" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kms" class="control-label"></label>
+                <input asp-for="Kms" class="form-control" />
+                <span asp-validation-for="Kms" class="text-danger"></span>
+            </div>
+            <p class="mt-2">Adicionar Imagens dos Danos</p>
+            <div class="form-control">
+                <input class="form-control" type="file" name="ficheiros" id="ficheiros" multiple accept=".png,.jpg,.jpeg,image/png,image/jpeg" />
+            </div>
+            <p class="mt-2">Danos :</p>
+            <div class="row d-flex">
+                <div>
+                    @if (ViewBag.Ficheiros == null)
+                    {
+                        <p>Nenhuma imagem inserida</p>
+                    }
+                    else
+                    {
+                        @foreach (var item in ViewBag.Ficheiros)
+                        {
+
+                            <div class="col p-2 m-2" style="border-radius:10px;border-radius:inherit">
+                                <img class="img-thumbnail" style="height:75px;width:auto" id="Ficheiro" src="@item" />
+                                <a class="btn btn-danger" asp-action="ApagarUpload" asp-route-id="@Model.Id" asp-route-image="@item">Apagar</a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Receber" class="btn btn-warning" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Reservas" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

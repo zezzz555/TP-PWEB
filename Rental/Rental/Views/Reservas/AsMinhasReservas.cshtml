@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Rental.Models.Reserva>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<h1 class="mt-2 mb-2">Lista das minhas Reservas</h1>
+@if (Model.Count() == 0)
+{
+    <p class="alert alert-warning  mb-3 mt-3 "> Não existem reservas em seu nome. </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.veiculo.FotoURL)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.veiculo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.veiculo.Localizacao)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataPedido)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataLevantamento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataEntrega)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Custo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Confirmado)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmTransito)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rejeitada)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Terminado)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (!String.IsNullOrEmpty(item.veiculo.FotoURL))
+                        {
+                            <img class="bd-placeholder-img card-img-top img-fluid" style="object-fit:cover;width:100%;height:100px" src="@Url.Content(item.veiculo.FotoURL)" alt="Imagem" height="280" />
+                        }
+                        else
+                        {
+                            <img class="bd-placeholder-img card-img-top img-fluid" style="object-fit:cover;width:100%;height:100px" src="@Url.Content("~/images/null.jpg")" alt="Imagem" />
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.veiculo.Modelo)
+                        @Html.DisplayFor(modelItem => item.veiculo.Marca)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.veiculo.Localizacao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataPedido)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataLevantamento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataEntrega)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Custo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Confirmado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmTransito)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rejeitada)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Terminado)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> 
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

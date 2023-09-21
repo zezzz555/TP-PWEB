@@ -1,0 +1,77 @@
+﻿@model Rental.ViewModels.ReservaViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@if (User.Identity != null && User.Identity.IsAuthenticated && Model.veiculo != null)
+{
+    <h4>Reserva - Pedido</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Calcular" method="post">
+                <div>
+                    @if (!String.IsNullOrEmpty(Model.veiculo.FotoURL))
+                    {
+                        <img class="img-thumbnail" style="height:auto;width:100%" id="FotoURL" src="@Url.Content(Model.veiculo.FotoURL)" />
+                    }
+                    else
+                    {
+                        <img class="img-thumbnail" style="height:100px;width:auto" id="FotoURL" src="@Url.Content("~/images/null.jpg")" />
+                    }
+                </div>
+                <input readonly asp-for="VeiculoId" />
+                <input readonly asp-for="veiculo.Marca" />
+                <input readonly asp-for="veiculo.Modelo" />
+                <input readonly asp-for="veiculo.Tipo" />
+                <input readonly asp-for="veiculo.Preco" />
+                <input readonly asp-for="veiculo.Localizacao" />
+                <input readonly asp-for="veiculo.Km" />
+                @if (Model.veiculo.empresa != null && Model.veiculo.categoria != null)
+                {
+                    <input readonly asp-for="veiculo.empresa.Nome" />
+                    <input readonly asp-for="veiculo.categoria.Nome" />
+                    @if (Model.veiculo.categoria.Nome.Equals("Carro"))
+                    {
+                        <input readonly asp-for="veiculo.TipoCombustivel" />
+                        <input readonly asp-for="veiculo.Transmissao" />
+                        <input readonly asp-for="veiculo.NumAssentos" />
+                        <input readonly asp-for="veiculo.NumPortas" />
+                    }
+                    @if (Model.veiculo.categoria.Nome.Equals("Mota"))
+                    {
+                        <input readonly asp-for="veiculo.IdadeMinima" />
+                        <input readonly asp-for="veiculo.Cilindrada" />
+                        <input readonly asp-for="veiculo.Licenca" />
+                    }
+                    @if (Model.veiculo.categoria.Nome.Equals("Caravana"))
+                    {
+                        <input  readonly  asp-for="veiculo.NumCamas" />
+                        <input readonly asp-for="veiculo.Transmissao" />
+                        <input  readonly  asp-for="veiculo.TipoCombustivel" />
+                        <input readonly asp-for="veiculo.NumAssentos" />
+                        <input readonly asp-for="veiculo.NumPortas" />
+                    }
+                }
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="DataLevantamento" class="control-label"></label>
+                    <input readonly type="text" asp-for="DataLevantamento" class="form-control" />
+                    <span asp-validation-for="DataLevantamento" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DataEntrega" class="control-label"></label>
+                    <input readonly type="text" asp-for="DataEntrega" class="form-control" />
+                    <span asp-validation-for="DataEntrega" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-warning">Calcular</button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning mt-3">
+        <p class="mb-0">Apenas utilizadores autenticados podem efetuar reservas de veículos. Por favor, efetue Login ou Registe-se.</p>
+    </div>
+}

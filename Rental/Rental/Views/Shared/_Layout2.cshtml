@@ -1,0 +1,127 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Untree.co">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap4" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Source+Serif+Pro:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="~/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="~/fonts/flaticon/font/flaticon.css">
+    <link rel="stylesheet" href="~/css/daterangepicker.css">
+    <title>@ViewData["Title"] Rental4You</title>
+
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+
+</head>
+<body>
+    <header>
+        <div class="site-mobile-menu site-navbar-target">
+            <div class="site-mobile-menu-header">
+                <div class="site-mobile-menu-close">
+                    <span class="icofont-close js-menu-toggle"></span>
+                </div>
+            </div>
+            <div class="site-mobile-menu-body"></div>
+        </div>
+
+        <nav class="site-nav" style="background-color:black;opacity:0.90">
+            <div class="container">
+                <div class="site-navigation">
+                    <a  asp-controller="Home" asp-action="Index">
+                        <img class="logo" src="~/images/logoNoBGWhite.png" alt="main_logo">
+                    </a>
+                    <ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu float-end">                    
+                        
+                        @if (SignInManager.Context.User.IsInRole("Cliente"))
+                        {
+                              <li><a class="dropdown-item"  asp-controller="Reservas" asp-action="AsMinhasReservas">As minhas Reservas</a></li>
+                        }
+                        @if (SignInManager.Context.User.IsInRole("Funcionario"))
+                        {
+                             <li class="has-children">
+                                <a  asp-controller="Veiculos" asp-action="Catalogo">Catálogo</a>
+                                <ul class="dropdown">
+                                    <li><a class="dropdown-item" asp-controller="Veiculos" asp-action="Create">Adicionar Veiculo</a></li>
+                                </ul>
+                            </li>                          
+                            <li><a class="dropdown-item"  asp-controller="Reservas" asp-action="Index">Reservas</a></li>
+                        }
+                        @if (SignInManager.Context.User.IsInRole("Gestor"))
+                        {
+                            <li class="has-children">
+                                <a  asp-controller="Veiculos" asp-action="Catalogo">Catálogo</a>
+                                <ul class="dropdown">
+                                    <li><a class="dropdown-item" asp-controller="Veiculos" asp-action="Create">Adicionar Veiculo</a></li>
+                                </ul>
+                            </li>          
+                            <li><a  asp-controller="Reservas" asp-action="Index">Reservas</a></li>
+                            <li><a  asp-controller="Dashboard" asp-action="Gestor">Dashboard</a></li>
+                            <li class="has-children">
+                                <a  asp-controller="UserRolesManager" asp-action="Index">Utilizadores</a>
+                                <ul class="dropdown">
+                                    <li><a class="dropdown-item"  asp-controller="UserRolesManager" asp-action="AdicionarUser">Adicionar</a></li>
+                                </ul>
+                            </li>
+                        }
+                        @if (SignInManager.Context.User.IsInRole("Admin"))
+                        { 
+                            <li class="has-children">
+                                <a asp-controller="Categorias" asp-action="Index">Categorias</a>
+                                <ul class="dropdown">
+                                    <li><a class="dropdown-item" asp-controller="Categorias" asp-action="Create">Adicionar</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-children">
+                                <a  asp-controller="Empresas" asp-action="Index">Empresas</a>
+                                <ul class="dropdown">
+                                    <li><a class="dropdown-item" asp-controller="Empresas" asp-action="Create">Adicionar</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-children">
+                                <a  asp-controller="UserRolesManager" asp-action="Index">Utilizadores</a>
+                                <ul class="dropdown">
+                                    <li><a class="dropdown-item"  asp-controller="UserRolesManager" asp-action="AdicionarUser">Adicionar</a></li>
+                                    <li><a class="dropdown-item"  asp-controller="RoleManager" asp-action="Index">Roles</a></li>
+                                </ul>
+                            </li>
+                            <li><a  asp-controller="Dashboard" asp-action="Admin">Dashboard</a></li>
+                        }
+                        <partial name="_LoginPartial" />
+                    </ul>
+                    <a href="#" class="burger ml-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div>
+        <main role="main" class="container my-5 pt-5 text-start">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer fixed-bottom text-muted">
+        <div class="container text-center text-white">
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co" class="link-highlight link-light">Untree.co</a> <!-- License information: https://untree.co/license/ -->Distributed By <a href="https://themewagon.com" class="link-highlight link-light">ThemeWagon</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</body>
+    @await RenderSectionAsync("Scripts", required: false)
+</html>

@@ -1,0 +1,74 @@
+﻿@model Rental.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Editar Utilizador";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<h3 class="mt-2 mb-2">@ViewData["Title"]</h3>
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="@Model.UserName" class="form-label" readonly></label>
+                    <input asp-for="@Model.UserName" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.PrimeiroNome"></label>
+                    <input asp-for="@Model.PrimeiroNome" class="form-control" />                 
+                    <span asp-validation-for="@Model.PrimeiroNome" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.UltimoNome"></label>
+                    <input asp-for="@Model.UltimoNome" class="form-control" />
+                    <span asp-validation-for="@Model.UltimoNome" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.DataNascimento"></label>
+                    <input asp-for="@Model.DataNascimento" class="form-control" />
+                    <span asp-validation-for="@Model.DataNascimento" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.DataRegisto"></label>
+                    <input asp-for="@Model.DataRegisto" class="form-control" />
+                    <span asp-validation-for="@Model.DataRegisto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.NIF"></label>
+                    <input asp-for="@Model.NIF" class="form-control" />
+                    <span asp-validation-for="@Model.NIF" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div>
+                        @if (Model.Avatar == null)
+                        {
+                            <img class="img-thumbnail" style="height:75px;width:auto" id="MyAvatar" src="~/images/null.jpg" />
+                        }
+                        else
+                        {
+                            <img class="img-thumbnail" style="height:75px;width:auto" id="MyAvatar" src="data:image/*;base64,@(Convert.ToBase64String(Model.Avatar))" />
+                        }
+                    </div>
+                    <div>
+                        <label asp-for="@Model.AvatarFile">Escolha uma imagem de perfil:</label>
+                        <input type="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg"
+                           asp-for="@Model.AvatarFile" class="form-control" onchange="document.getElementById('MyAvatar').src = window.URL.createObjectURL(this.files[0])" />
+                        <span asp-validation-for="@Model.AvatarFile" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Ativo" /> @Html.DisplayNameFor(model => model.Ativo)
+                    </label>
+                </div>
+                <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

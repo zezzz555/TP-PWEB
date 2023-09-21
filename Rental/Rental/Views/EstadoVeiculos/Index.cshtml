@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Rental.Models.EstadoVeiculo>
+
+@{
+    ViewData["Title"] = "Lista de Entregas e Recibimentos de Veiculos";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<h1>Lista de Entregas e Recibimentos de Veiculos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Kms)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Danos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Observações)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Eliminado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.reserva)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.funcionario)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Kms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Danos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observações)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Eliminado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.reserva.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.funcionario.UserName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

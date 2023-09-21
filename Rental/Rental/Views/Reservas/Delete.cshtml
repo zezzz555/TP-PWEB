@@ -1,0 +1,94 @@
+﻿@model Rental.Models.Reserva
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<h1>Eliminar</h1>
+
+<h3>Tem a certeza de que pretende eliminar?</h3>
+<div>
+    <h4>Reserva</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataLevantamento)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DataLevantamento)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataEntrega)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DataEntrega)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DuracaoEmHoras)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DuracaoEmHoras)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DuracaoEmMinutos)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DuracaoEmMinutos)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Custo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Custo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EmTransito)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmTransito)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Rejeitada)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Rejeitada)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Terminado)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Terminado)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Eliminado)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Eliminado)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Confirmado)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Confirmado)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.veiculo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.veiculo.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.cliente)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.cliente.Id)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index">Voltar</a>
+    </form>
+</div>

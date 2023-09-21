@@ -1,0 +1,113 @@
+﻿@using Rental.Models
+@model Rental.ViewModels.PesquisaVeiculoCategoriaEmpresaViewModel
+@{
+    ViewData["Title"] = "Gerir Frota de Veiculos da Empresa";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@if (Model != null)
+{
+    <div>
+        <form asp-action="Catalogo" method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="row mb-2 mt-2 align-content-center">
+                <div class="col-4">
+                    <label asp-for="CategoriaId" class="control-label"></label>
+                    <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId" title="Categoria">
+                        <option value="">Escolha uma categoria</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label asp-for="Estado" class="control-label"></label>
+                    <select asp-for="Estado" class="form-control" title="estado">
+                        <option value="">Escolha a disponiblidade</option>
+                        <option value="true">Disponivel</option>
+                        <option value="false">Indisponivel</option>
+                    </select>
+                </div>
+                <div class="col-1 mt-3">
+                    <input type="submit" class="btn btn-warning btn-block" value="Filtrar">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.ListaDeVeiculos != null && Model.ListaDeVeiculos.Count == 0)
+    {
+        <p class="alert alert-primary  mb-3 mt-3 "> Não existem veículos com os dados introduzidos </p>
+    }
+    else if (Model.ListaDeVeiculos != null)
+    {
+        <div class="row row-cols-1 row-cols-md-3 mb-3 mt-3 text-center">
+            @foreach (var item in Model.ListaDeVeiculos)
+            {
+                <div class="col">
+                    <div class="card text-dark border-warning mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">
+                                @item.Marca @item.Modelo
+                            </h4>
+                        </div>
+                        @if (!String.IsNullOrEmpty(item.FotoURL))
+                        {
+                            <img class="bd-placeholder-img card-img-top img-fluid" style="object-fit:cover;width:100%;height:250px" src="@Url.Content(item.FotoURL)" alt="Imagem" height="280" />
+                        }
+                        else
+                        {
+                            <img class="bd-placeholder-img card-img-top img-fluid" style="object-fit:cover;width:100%;height:250px" src="@Url.Content("~/images/null.jpg")" alt="Imagem" />
+                        }
+                        <div class="card-body">
+                            <h2 class="card-title pricing-card-title">@item.Preco € <small class="text-muted fw-light">Por dia</small> </h2>
+                            @if (item.Tipo != null && item.Localizacao != null && item.empresa != null)
+                            {
+                                <p>Veículo do tipo <span class="fw-bold">@item.Tipo</span>, Localizado em <span class="fw-bold">@item.Localizacao</span>, Pertencente à empresa <span class="fw-bold">@item.empresa.Nome</span></p>
+                            }
+                            @if (item.Estado == true)
+                            {
+                                <p class="fw-bold text-success">Veículo Ativo</p>
+                            }
+                            else if (item.Estado == false)
+                            {
+                                <p class="fw-bold text-danger">Veículo Inativo</p>
+                            }
+                            <div>
+                                <div class="text-center">
+                                    <a class="btn border-warning" asp-controller="Veiculos" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                                    <a class="btn border-success" asp-controller="Veiculos" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                                    <a class="btn border-danger" asp-controller="Veiculos" asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+                                </div>
+                                <div class="text-end mt-1">
+                                    @if (item.empresa != null)
+                                    {
+                                        <small class="text-muted">
+                                            @item.empresa.Avaliacao
+                                            <a class="text-black" asp-area="" asp-controller="Empresas" asp-action="Index">
+                                                @if (@item.empresa.Avaliacao < 5)
+                                                {
+                                                    <svg bootstrap-icon="StarFill" style="color:red" width="16" height="16"></svg>
+                                                }
+                                                else if (@item.empresa.Avaliacao >= 5 && @item.empresa.Avaliacao < 7)
+                                                {
+                                                    <svg bootstrap-icon="StarFill" style="color:orange" width="16" height="16"></svg>
+                                                }
+                                                else if (@item.empresa.Avaliacao >= 7)
+                                                {
+                                                    <svg bootstrap-icon="StarFill" style="color:green" width="16" height="16"></svg>
+                                                }
+                                            </a>
+                                        </small>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

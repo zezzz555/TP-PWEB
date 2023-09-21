@@ -1,0 +1,80 @@
+﻿@model Rental.Models.Empresa
+
+@{
+    ViewData["Title"] = "Criar";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<h1>Criar</h1>
+
+<h4>Empresa</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Avaliacao" class="control-label"></label>
+                <input asp-for="Avaliacao" class="form-control" />
+                <span asp-validation-for="Avaliacao" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <div>
+                     @if (ViewBag.Logo != null)
+                    {
+                        <img class="img-thumbnail" style="height:75px;width:auto" id="Logo" src=" data:image /*;base64,@(Convert.ToBase64String(Model.Logo))" />
+                    }
+                    else
+                    {
+                        <img class="img-thumbnail" style="height:75px;width:auto" id="Logo" src="/images/null.jpg" />
+                    }
+                </div>
+                <div>
+                    <label asp-for="LogoFile"> Escolha o logótipo da empresa:</label>
+                    <input type="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg"
+                           asp-for="LogoFile" class="form-control" onchange="document.getElementById('Logo').src = window.URL.createObjectURL(this.files[0])" />
+                    <span asp-validation-for="LogoFile" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="bg-primary bg-opacity-25 text-white pt-2">
+                <p>Gestor: </p>
+                <div class="form-group mt-2 mb-2 ms-2 me-2">
+                    <label for="email" class="control-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" />
+                </div>
+                <div class="form-group mt-2 mb-2 ms-2 me-2">
+                    <label for="primeiroNome" class="control-label">Primeiro Nome</label>
+                    <input type="text" id="primeiroNome" name="primeiroNome" class="form-control" />
+                </div>
+                <div class="form-group mt-2 mb-2 ms-2 me-2">
+                    <label for="ultimoNome" class="control-label">Ultimo Nome</label>
+                    <input type="text" id="ultimoNome" name="ultimoNome" class="form-control" />
+                </div>
+                <div class="form-group mt-2 mb-2 ms-2 me-2 pb-2">
+                    <label for="password" class="control-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Susbcricao" /> @Html.DisplayNameFor(model => model.Susbcricao)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar para a lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
